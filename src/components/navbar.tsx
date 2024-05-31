@@ -1,36 +1,35 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import { Dialog } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
-import Image from "next/image";
-import { Link } from "@/components/ui/link";
+import { useState } from 'react';
+import Image from 'next/image';
+
+import { Dialog } from '@headlessui/react';
+import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
+import { useQuery } from '@tanstack/react-query';
+
+import { Link } from '@/components/ui/link';
+import { fetchAuthenticatedUser } from '@/features/auth/user.client';
 
 const navigation = [
-  { name: "Accueil", href: "/" },
-  { name: "Historique", href: "/historique" },
+  { name: 'Accueil', href: '/' },
+  { name: 'Historique', href: '/historique' },
 ];
 
 export function Navbar() {
+  const { data: user } = useQuery({
+    queryKey: ['auth'],
+    queryFn: fetchAuthenticatedUser,
+  });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <div className="bg-white">
       <header className="inset-x-0 top-0 z-50">
-        <nav
-          className="flex items-center justify-between p-6 lg:px-8"
-          aria-label="Global"
-        >
+        <nav className="flex items-center justify-between p-6 lg:px-8" aria-label="Global">
           <div className="flex lg:flex-1">
             <Link href="/" className="-m-1.5 p-1.5">
               <span className="sr-only">Filmvint</span>
-              <Image
-                className="h-8 w-auto"
-                src="/next.svg"
-                alt="Nozzle Logo"
-                width={865.13}
-                height={519.08}
-              />
+              <Image className="h-8 w-auto" src="/next.svg" alt="Nozzle Logo" width={865.13} height={519.08} />
             </Link>
           </div>
           <div className="flex lg:hidden">
@@ -45,42 +44,28 @@ export function Navbar() {
           </div>
           <div className="hidden lg:flex lg:gap-x-12">
             {navigation.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-semibold leading-6 text-gray-900"
-              >
+              <Link key={item.name} href={item.href} className="text-sm font-semibold leading-6 text-gray-900">
                 {item.name}
               </Link>
             ))}
           </div>
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
-            <Link
-              href="/connexion"
-              className="text-sm font-semibold leading-6 text-gray-900"
-            >
-              Connexion <span aria-hidden="true">&rarr;</span>
-            </Link>
+            {user ? (
+              user.email
+            ) : (
+              <Link href="/connexion" className="text-sm font-semibold leading-6 text-gray-900">
+                Connexion <span aria-hidden="true">&rarr;</span>
+              </Link>
+            )}
           </div>
         </nav>
-        <Dialog
-          as="div"
-          className="lg:hidden"
-          open={mobileMenuOpen}
-          onClose={setMobileMenuOpen}
-        >
+        <Dialog as="div" className="lg:hidden" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
           <div className="fixed inset-0 z-50" />
           <Dialog.Panel className="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div className="flex items-center justify-between">
-              <Link href="#" className="-m-1.5 p-1.5">
+              <Link href="/" className="-m-1.5 p-1.5">
                 <span className="sr-only">Filmvint</span>
-                <Image
-                  className="h-8 w-auto"
-                  src="/next.svg"
-                  alt=""
-                  width={865.13}
-                  height={519.08}
-                />
+                <Image className="h-8 w-auto" src="/next.svg" alt="" width={865.13} height={519.08} />
               </Link>
               <button
                 type="button"
@@ -105,12 +90,16 @@ export function Navbar() {
                   ))}
                 </div>
                 <div className="py-6">
-                  <Link
-                    href="/connexion"
-                    className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                  >
-                    Connexion
-                  </Link>
+                  {user ? (
+                    user.email
+                  ) : (
+                    <Link
+                      href="/connexion"
+                      className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                    >
+                      Connexion
+                    </Link>
+                  )}
                 </div>
               </div>
             </div>

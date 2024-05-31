@@ -1,6 +1,7 @@
-import Image from "next/image";
-import { Button, ButtonProps } from "../ui/button";
-import { Link, LinkProps } from "../ui/link";
+import Image from 'next/image';
+
+import { Button, ButtonProps } from '../ui/button';
+import { Link, LinkProps } from '../ui/link';
 
 type BaseProps = {
   title: string;
@@ -8,39 +9,28 @@ type BaseProps = {
   label: string;
 };
 
-type Props = BaseProps &
-  (
-    | {
-        type: "button";
-        actionProps: ButtonProps;
-      }
-    | { type: "link"; actionProps: LinkProps }
-  );
+type Props = BaseProps & ({ type: 'button'; actionProps: ButtonProps } | { type: 'link'; actionProps: LinkProps });
 
 export function MovieCard({ poster, title, label, ...props }: Props) {
   return (
     <article
-      className="rounded-lg shadow border overflow-hidden h-full grid"
+      className="grid h-full overflow-hidden rounded-lg border shadow"
       style={{
-        gridTemplateRows: "auto 1fr auto",
+        gridTemplateRows: 'auto 1fr auto',
       }}
     >
-      <header className="h-80 lg:h-96 w-full relative">
-        <Image src={poster} alt="Poster" layout="fill" objectFit="cover" />
+      <header className="relative h-80 w-full lg:h-96">
+        <Image src={poster} alt="Poster" fill style={{ objectFit: 'cover' }} />
       </header>
 
-      <p className="p-4 text-center h-full flex justify-center items-center">
-        {title}
-      </p>
+      <p className="flex h-full items-center justify-center p-4 text-center">{title}</p>
 
-      {props.type === "button" ? (
-        <Button {...props.actionProps}>{label}</Button>
+      {props.type === 'button' ? (
+        <Button {...props.actionProps} className="rounded-t-none">
+          {label}
+        </Button>
       ) : (
-        <Link
-          {...props.actionProps}
-          variant="primary-button"
-          className="w-full text-center h-fit"
-        >
+        <Link {...props.actionProps} variant="primary-button" className="h-fit w-full rounded-t-none text-center">
           {label}
         </Link>
       )}

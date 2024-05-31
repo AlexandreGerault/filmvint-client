@@ -1,3 +1,23 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": [
+    "airbnb",
+    "airbnb-typescript",
+    "airbnb/hooks",
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "next/core-web-vitals",
+    "plugin:prettier/recommended"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json"
+  },
+  "plugins": ["prettier"],
+  "rules": {
+    "@typescript-eslint/no-use-before-define": "warn",
+    "global-require": "off",
+    "import/no-extraneous-dependencies": "warn",
+    "import/prefer-default-export": "off",
+    "prettier/prettier": "warn",
+    "react/jsx-props-no-spreading": "off"
+  }
 }

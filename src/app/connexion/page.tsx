@@ -1,24 +1,19 @@
-import { Button } from "@/components/ui/button";
-import { InputWithLabel } from "@/components/ui/input";
-import { Link } from "@/components/ui/link";
-import { PageTitle } from "@/components/ui/page-title";
+import { Link } from '@/components/ui/link';
+import { PageTitle } from '@/components/ui/page-title';
+import { LoginForm } from '@/features/auth/login/login-form.client';
+import { guestOnly } from '@/features/auth/user.server';
 
-export default function Connexion() {
+export default async function Connexion() {
+  await guestOnly();
+
   return (
-    <div className="max-w-96 w-full">
+    <div className="w-full max-w-96">
       <PageTitle>Connexion</PageTitle>
 
-      <form className="space-y-4">
-        <InputWithLabel label="Adresse e-mail" id="email" type="email" />
-        <InputWithLabel label="Mot de passe" id="password" type="password" />
+      <LoginForm />
 
-        <Button type="submit" className="w-full">
-          Se connecter
-        </Button>
-      </form>
-
-      <p className="text-sm mt-1 text-center">
-        Vous n&apos;avez pas de compte ?{" "}
+      <p className="mt-1 text-center text-sm">
+        Vous n&apos;avez pas de compte ?{' '}
         <Link href="/inscription" variant="primary">
           Inscrivez-vous
         </Link>
