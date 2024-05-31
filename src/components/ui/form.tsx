@@ -11,6 +11,8 @@ import { cn } from '@/lib/utils';
 
 const Form = FormProvider;
 
+const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
+
 type FormFieldContextValue<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
@@ -24,8 +26,10 @@ function FormField<
   TFieldValues extends FieldValues = FieldValues,
   TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>,
 >({ ...props }: ControllerProps<TFieldValues, TName>) {
+  const value = React.useMemo(() => ({ name: props.name }), [props.name]);
+
   return (
-    <FormFieldContext.Provider value={{ name: props.name }}>
+    <FormFieldContext.Provider value={value}>
       <Controller {...props} />
     </FormFieldContext.Provider>
   );
@@ -58,14 +62,14 @@ type FormItemContextValue = {
   id: string;
 };
 
-const FormItemContext = React.createContext<FormItemContextValue>({} as FormItemContextValue);
-
 const FormItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => {
     const id = React.useId();
 
+    const value = React.useMemo(() => ({ id }), [id]);
+
     return (
-      <FormItemContext.Provider value={{ id }}>
+      <FormItemContext.Provider value={value}>
         <div ref={ref} className={cn('space-y-2', className)} {...props} />
       </FormItemContext.Provider>
     );
